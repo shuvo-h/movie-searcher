@@ -1,5 +1,6 @@
-import Layout from "@/src/components/Layout/Layout";
-import MovieCard from "@/src/components/movie/Movie";
+// import Layout from "@/src/components/Layout/Layout";
+import Layout from "../src/components/Layout/Layout";
+import MovieCard from "../src/components/movie/Movie";
 import Loader from "@/src/components/shared/Loader";
 import PlayerPlaylist from "@/src/components/shared/PlayerPlaylist";
 import { getmovies,  getTrailerListByMovieId,} from "@/src/fetchers/movieFetchers";
@@ -55,7 +56,7 @@ console.log(favouriteList,"favouriteList ",totalPages);
   return (
     <Layout seo={{}}>
       <>
-        <h1 className="text-2xl font-bold text-center my-4">
+        <h1 className="text-2xl font-bold text-center my-4" data-testid="welcome-title">
           Welcome To Movie Zone
         </h1>
         <div className="mx-auto max-w-md">
@@ -64,6 +65,7 @@ console.log(favouriteList,"favouriteList ",totalPages);
             onKeyDown={searchMovie}
             type="search"
             placeholder="Search your movie"
+            data-testid="search-field"
           />
         </div>
         {
