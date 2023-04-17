@@ -14,7 +14,7 @@ const Watch = () => {
     const [streamKey,setStreamKey] = useState<string>("");
     const [watchMovie,setWatchMovie] = useState<MovieDetails>({} as MovieDetails);
 
-    console.log(movie_id,watchMovie);
+
     useEffect(()=>{
         const fetchMovieAndTailers = async(id:number) => {
             const res = await getSingleMovieById(id);
