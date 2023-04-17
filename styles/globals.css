@@ -27,7 +27,7 @@ body {
   width: 0;
   display: none;
 }
-.watch-btn-wrapper .watch-btn{
+.watch-btn-wrapper:hover .watch-btn{
   display: flex;
   align-items: center;
   transition: all 0.3s;

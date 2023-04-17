@@ -5,7 +5,7 @@ export const updateFavourite = (id:number,cb:(list:number[])=>void) =>{
     if (data.includes(id)) {
         data = data.filter((idEl:number)=>idEl !== id);
     }else{
-        data = [...data,id];
+        data = [id,...data];
     }
     localStorage.setItem(storageName,JSON.stringify(data));
     cb(data);

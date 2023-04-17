@@ -14,6 +14,11 @@ class MovieClient  extends ApiClient{
         return axios.get(url);
     }
 
+    getMovieById(movie_id:number){
+        const url = `${this.url}/${movie_id}?api_key=${this.getKeys().movieApiKey}`;
+        return axios.get(url);
+    }
+    
     getMoviesByIdList(movie_ids:number[]){
         const axiosPromises:Promise<AxiosResponse<any, any>>[] = [];
         movie_ids.forEach((movieId:number)=>{

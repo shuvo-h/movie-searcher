@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { IconContext } from "react-icons";
 import { updateFavourite } from '@/src/utils/handleStorage';
+import FavouriteIcon from '../shared/FavouriteIcon';
 
 interface MovieCard{
     movieEl: Movie
@@ -32,7 +33,19 @@ const MovieCard = ({movieEl,getTrailers,favouriteList,setFavouriteList}:MovieCar
             <div className="absolute inset-0 flex items-center justify-center watch-btn-wrapper">
                 <div className="border overflow-hidden rounded text-cyan-300 watch-btn justify-center bg-gray-800 bg-opacity-70 border border-indigo-300">
                     <button className='bg-cyan-900 hover:bg-cyan-700 px-4 py-1 rounded text-cyan-300' onClick={()=>getTrailers(movieEl)}>Watch</button>
-                    <span 
+                    
+                    <FavouriteIcon 
+                            updateFavourite={updateFavourite}
+                            onMouseEnter={()=>setIsHover(true)}
+                            onMouseLeave={()=>setIsHover(false)}
+                            isHover={isHover}
+                            isFavourite={isFavourite}
+                            updateCallBackFn={handleFavourite}
+                            movie_id={movieEl.id}
+                            size={40}
+                        />
+
+                    {/* <span 
                         className='ms-1 rounded text-cyan-300 cursor-pointer' 
                         onClick={()=>updateFavourite(movieEl.id,handleFavourite)}
                         onMouseEnter={()=>setIsHover(true)}
@@ -48,6 +61,7 @@ const MovieCard = ({movieEl,getTrailers,favouriteList,setFavouriteList}:MovieCar
                             }
                         </IconContext.Provider>
                     </span>
+                     */}
                 </div>
             </div>
             <div className="bg-cyan-900 bg-opacity-90 text-cyan-300 p-2 rounded-lg mt-auto">

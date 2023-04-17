@@ -1,6 +1,6 @@
 import MovieFetcher from "../network/movies";
 import SearchFetcher from "../network/search";
-import { Movie, MovieSearchQuery, MovieTrailer } from "../typesDefs/movie.type";
+import { Movie, MovieDetails, MovieSearchQuery, MovieTrailer } from "../typesDefs/movie.type";
 
 interface errorType {
   error: Boolean;
@@ -42,14 +42,28 @@ export const getTrailerListByMovieId = async (movieID: number): Promise<TrailerL
 };
 
 interface FavouriteListByID extends errorType {
-  favouriteList: Movie[];
+  favouriteList: MovieDetails[];
 }
 export const getMovieListByMovieIds = async (movieIDs: number[]):Promise<FavouriteListByID> => {
   try {
     const allFavouriteRes = await Promise.all(MovieFetcher.getMoviesByIdList(movieIDs));
     const result = allFavouriteRes.map(({data}) =>data);
+    console.log(result);
+    
     return { error: false, message: "", favouriteList: result };
   } catch (error: any) {
     return { error: true, message: error.message, favouriteList: [] };
+  }
+};
+
+interface SingleMovieById extends errorType{
+  movie: MovieDetails
+}
+export const getSingleMovieById = async (movieID: number):Promise<SingleMovieById> => {
+  try {
+    const movieDetails = await MovieFetcher.getMovieById(movieID);
+    return { error: false, message: "", movie: movieDetails.data };
+  } catch (error: any) {
+    return { error: true, message: error.message, movie: {} as MovieDetails };
   }
 };

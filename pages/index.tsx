@@ -1,30 +1,31 @@
 import Layout from "@/src/components/Layout/Layout";
 import MovieCard from "@/src/components/movie/Movie";
-import TrailerCard from "@/src/components/movie/TrailerCard";
-import {
-  getmovies,
-  getTrailerListByMovieId,
-} from "@/src/fetchers/movieFetchers";
+import Loader from "@/src/components/shared/Loader";
+import PlayerPlaylist from "@/src/components/shared/PlayerPlaylist";
+import { getmovies,  getTrailerListByMovieId,} from "@/src/fetchers/movieFetchers";
 import { Movie, MovieTrailer } from "@/src/typesDefs/movie.type";
 import { getFavouriteIds } from "@/src/utils/handleStorage";
 import { useEffect, useState } from "react";
-import ReactPlayer from 'react-player/youtube'
+
 
 export default function Home(): JSX.Element {
   const [totalPages, setTotalpages] = useState<number>(0);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [moviesErr, setMoviesErr] = useState<string>("");
+  const [isMovieLoading, setIsMovieLoading] = useState<boolean>(false);
   
   const [selectedMovie, setSelectedMovie] = useState<Movie>({} as Movie);
   const [tarilers, setTarilers] = useState<MovieTrailer[]>([]);
   const [tarilersErr, setTarilersErr] = useState<string>("");
+  const [isTarilerLoading, setIsTarilerLoading] = useState<boolean>(false);
 
   const [streamingKey, setStreamingKey] = useState<string>("");
   const [favouriteList, setFavouriteList] = useState<number[]>([]);
-console.log(favouriteList,"favouriteList");
+console.log(favouriteList,"favouriteList ",totalPages);
 
   const searchMovie = async (e: any) => {
     if (e.keyCode === 13 || e.key === "Enter") {
+      setIsMovieLoading(true);
       const data = await getmovies(e.target.value);
       if (!data?.error) {
         setMovies(data.results);
@@ -32,18 +33,20 @@ console.log(favouriteList,"favouriteList");
       } else {
         setMoviesErr(data.message);
       }
+      setIsMovieLoading(false);
     }
   };
-
+  
   const getTrailers = async (movie: Movie): Promise<void> => {
+    setIsTarilerLoading(true);
     setSelectedMovie(movie);
     const result = await getTrailerListByMovieId(movie.id);
     setTarilers(result.tarilers);
     setStreamingKey(result.tarilers.length? result.tarilers[0].key : "");
-    // set details of the movie
+    setIsTarilerLoading(false);
+    window.scrollTo({top:0,behavior:"smooth"});
   };
-  console.log(movies);
-
+  
   useEffect(()=>{
     const ids = getFavouriteIds();
     setFavouriteList(ids);
@@ -55,7 +58,6 @@ console.log(favouriteList,"favouriteList");
         <h1 className="text-2xl font-bold text-center my-4">
           Welcome To Movie Zone
         </h1>
-        <h1>Make pagination and filters</h1>
         <div className="mx-auto max-w-md">
           <input
             className="w-full border rounded-full px-4 py-2 border-gray-300 focus:border-sky-400 focus:outline-none"
@@ -64,38 +66,16 @@ console.log(favouriteList,"favouriteList");
             placeholder="Search your movie"
           />
         </div>
-
         {
-          !!tarilers.length && <section>
-            <div className={`grid grid-cols-3 gap-8 my-4 h-96`}>
-              <div className="col-span-2">
-                {
-                  streamingKey && <ReactPlayer 
-                    url={`https://www.youtube.com/watch?v=${streamingKey}`} 
-                    playing={true}
-                    controls={true}
-                    volume={1}
-                    muted={false}
-                    playbackRate={1}
-                    width={'100%'}
-                    height={'100%'}
-                    style={{margin:"auto"}}
-                  />
-                }
-                
-              </div>
-              <div className="max-h-96 overflow-y-scroll scrollbar-cstm">
-                {tarilers.map((trailer) => (
-                  <TrailerCard trailer={trailer} streamingKey={streamingKey} setStreamingKey={setStreamingKey} key={trailer.id} />
-                ))}
-              </div>
-            </div>
-            <p>Title: {selectedMovie.title}</p>
-            <p>Original Title: {selectedMovie.original_title}</p>
-            <p>Original Language: {selectedMovie.original_language}</p>
-            <p>Release Date: {selectedMovie.release_date.toString()}</p>
-            <p>Overview: {selectedMovie.overview}</p>
-          </section>
+          isTarilerLoading 
+          ? <div className="h-40 flex items-center justify-center"><Loader /></div>
+          : tarilers.length 
+          ? <PlayerPlaylist tarilers={tarilers} streamingKey={streamingKey} selectedMovie={selectedMovie} setStreamingKey={setStreamingKey} />
+          : <></>
+        }
+        
+        {
+          !!isMovieLoading && <div className="h-40 flex items-center justify-center"><Loader /></div> 
         }
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
           {movies.map((movieEl) => (
