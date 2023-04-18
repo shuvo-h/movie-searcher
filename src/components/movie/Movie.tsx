@@ -29,39 +29,21 @@ const MovieCard = ({movieEl,getTrailers,favouriteList,setFavouriteList}:MovieCar
     };
 
     return (
-        <div className="relative flex flex-col justify-end border rounded-lg p-3 h-80 bg-cover" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movieEl.poster_path})` }}>
+        <div className="relative flex flex-col justify-end border rounded-lg p-3 h-80 bg-cover" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movieEl.poster_path})` }} data-testid="movie-card">
             <div className="absolute inset-0 flex items-center justify-center watch-btn-wrapper">
                 <div className="border overflow-hidden rounded text-cyan-300 watch-btn justify-center bg-gray-800 bg-opacity-70 border border-indigo-300">
                     <button className='bg-cyan-900 hover:bg-cyan-700 px-4 py-1 rounded text-cyan-300' onClick={()=>getTrailers(movieEl)}>Watch</button>
                     
                     <FavouriteIcon 
-                            updateFavourite={updateFavourite}
-                            onMouseEnter={()=>setIsHover(true)}
-                            onMouseLeave={()=>setIsHover(false)}
-                            isHover={isHover}
-                            isFavourite={isFavourite}
-                            updateCallBackFn={handleFavourite}
-                            movie_id={movieEl.id}
-                            size={40}
-                        />
-
-                    {/* <span 
-                        className='ms-1 rounded text-cyan-300 cursor-pointer' 
-                        onClick={()=>updateFavourite(movieEl.id,handleFavourite)}
+                        updateFavourite={updateFavourite}
                         onMouseEnter={()=>setIsHover(true)}
                         onMouseLeave={()=>setIsHover(false)}
-                    >
-                        <IconContext.Provider value={{ color: "blue", size:'25', className: "" }}>
-                            {
-                                isHover 
-                                ? <FcLike  /> 
-                                : isFavourite 
-                                ? <FcLike  />
-                                : <FcLikePlaceholder />
-                            }
-                        </IconContext.Provider>
-                    </span>
-                     */}
+                        isHover={isHover}
+                        isFavourite={isFavourite}
+                        updateCallBackFn={handleFavourite}
+                        movie_id={movieEl.id}
+                        size={40}
+                    />
                 </div>
             </div>
             <div className="bg-cyan-900 bg-opacity-90 text-cyan-300 p-2 rounded-lg mt-auto">

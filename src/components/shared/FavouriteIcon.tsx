@@ -20,6 +20,7 @@ const FavouriteIcon = ({updateFavourite,onMouseEnter,onMouseLeave,isHover,isFavo
             onClick={()=>updateFavourite(movie_id,updateCallBackFn)}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            data-testid={`favourite-icon-${movie_id}`}
         >
             <IconContext.Provider value={{ color: "blue", size: size.toString(), className: "" }}>
                 {
