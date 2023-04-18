@@ -48,7 +48,6 @@ export const getMovieListByMovieIds = async (movieIDs: number[]):Promise<Favouri
   try {
     const allFavouriteRes = await Promise.all(MovieFetcher.getMoviesByIdList(movieIDs));
     const result = allFavouriteRes.map(({data}) =>data);
-    console.log(result);
     
     return { error: false, message: "", favouriteList: result };
   } catch (error: any) {

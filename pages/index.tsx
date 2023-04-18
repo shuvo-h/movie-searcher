@@ -22,15 +22,19 @@ export default function Home(): JSX.Element {
 
   const [streamingKey, setStreamingKey] = useState<string>("");
   const [favouriteList, setFavouriteList] = useState<number[]>([]);
-console.log(favouriteList,"favouriteList ",totalPages);
+  
 
   const searchMovie = async (e: any) => {
     if (e.keyCode === 13 || e.key === "Enter") {
       setIsMovieLoading(true);
+      setMovies([]);
+      setTarilers([]);
       const data = await getmovies(e.target.value);
-      if (!data?.error) {
+      if (data.results?.length) {
         setMovies(data.results);
         setTotalpages(data.total_pages);
+      } if(!data.results.length && !data.error){
+        setMoviesErr("No Movies found");
       } else {
         setMoviesErr(data.message);
       }
@@ -41,8 +45,13 @@ console.log(favouriteList,"favouriteList ",totalPages);
   const getTrailers = async (movie: Movie): Promise<void> => {
     setIsTarilerLoading(true);
     setSelectedMovie(movie);
+    setTarilers([]);
     const result = await getTrailerListByMovieId(movie.id);
-    setTarilers(result.tarilers);
+    if (result.tarilers?.length) {
+      setTarilers(result.tarilers);
+    }else{
+      setTarilersErr("No trailer found! ")
+    }
     setStreamingKey(result.tarilers.length? result.tarilers[0].key : "");
     setIsTarilerLoading(false);
     window.scrollTo({top:0,behavior:"smooth"});
@@ -70,14 +79,20 @@ console.log(favouriteList,"favouriteList ",totalPages);
         </div>
         {
           isTarilerLoading 
-          ? <div className="h-40 flex items-center justify-center"><Loader /></div>
+          ? <div className="h-40 flex items-center justify-center" data-testid="trailer-loader"><Loader /></div>
+          : tarilersErr
+          ? <div className="text-center my-6 font-semibold"><p className="text-pink-700 mx-auto">{tarilersErr}</p></div>
           : tarilers.length 
           ? <PlayerPlaylist tarilers={tarilers} streamingKey={streamingKey} selectedMovie={selectedMovie} setStreamingKey={setStreamingKey} />
           : <></>
         }
         
         {
-          !!isMovieLoading && <div className="h-40 flex items-center justify-center"><Loader /></div> 
+          isMovieLoading 
+          ? <div className="h-40 flex items-center justify-center" data-testid="movie-loader"><Loader /></div> 
+          : moviesErr 
+          ? <div className="text-center text-pink-700 font-semibold my-6"><p>{moviesErr}</p></div>
+          : <></>
         }
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
           {movies.map((movieEl) => (

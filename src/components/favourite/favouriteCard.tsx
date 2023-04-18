@@ -12,9 +12,9 @@ interface FavouriteCardProp {
     removeFavourite: (list:number[])=>void
 }
 const FavouriteCard = ({favouriteMovie,isOrderChange,removeFavourite}:FavouriteCardProp):JSX.Element => {
-    console.log(favouriteMovie,isOrderChange);
+   
     const[isHover,setIsHover] = useState<boolean>(false)
-    const formatGenres = (generes:{id:number,name:string}[]) => generes.map(({name})=>name).join(", ");
+    const formatGenres = (generes:{id:number,name:string}[]) => generes?.map(({name})=>name).join(", ");
 
    
 
@@ -79,7 +79,7 @@ const FavouriteCard = ({favouriteMovie,isOrderChange,removeFavourite}:FavouriteC
                     <h2 className='font-semibold text-lg mt-4'>Production Companies</h2>
                     <div>
                         {
-                            favouriteMovie.production_companies.map(({name,logo_path,origin_country,id}) =>{
+                            favouriteMovie.production_companies?.map(({name,logo_path,origin_country,id}) =>{
                                 return <div className='flex gap-4 my-2 border p-2 shadow-md' key={id}>
                                     <Image
                                         alt={favouriteMovie.title}
