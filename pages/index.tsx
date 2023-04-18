@@ -24,12 +24,12 @@ export default function Home(): JSX.Element {
   const [favouriteList, setFavouriteList] = useState<number[]>([]);
   
 
-  const searchMovie = async (e: any) => {
-    if (e.keyCode === 13 || e.key === "Enter") {
+  const searchMovie = async (e: React.KeyboardEvent<HTMLInputElement>,initialSearch?:string) => {
+    if (e.keyCode === 13 || e.key === "Enter" || initialSearch) {
       setIsMovieLoading(true);
       setMovies([]);
       setTarilers([]);
-      const data = await getmovies(e.target.value);
+      const data = await getmovies((e.target as HTMLInputElement)?.value ?? initialSearch);
       if (data.results?.length) {
         setMovies(data.results);
         setTotalpages(data.total_pages);
@@ -46,6 +46,7 @@ export default function Home(): JSX.Element {
     setIsTarilerLoading(true);
     setSelectedMovie(movie);
     setTarilers([]);
+    setTarilersErr("");
     const result = await getTrailerListByMovieId(movie.id);
     if (result.tarilers?.length) {
       setTarilers(result.tarilers);
@@ -60,6 +61,7 @@ export default function Home(): JSX.Element {
   useEffect(()=>{
     const ids = getFavouriteIds();
     setFavouriteList(ids);
+    searchMovie({} as React.KeyboardEvent<HTMLInputElement>,"a");
   },[])
   
   return (
