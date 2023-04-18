@@ -1,4 +1,5 @@
 import Layout from '@/src/components/Layout/Layout';
+import Loader from '@/src/components/shared/Loader';
 import PlayerPlaylist from '@/src/components/shared/PlayerPlaylist';
 import { getSingleMovieById, getTrailerListByMovieId } from '@/src/fetchers/movieFetchers';
 import { Movie, MovieDetails, MovieTrailer } from '@/src/typesDefs/movie.type';
@@ -13,20 +14,24 @@ const Watch = () => {
     const [trailers,setTrailers] = useState<MovieTrailer[]>([]);
     const [streamKey,setStreamKey] = useState<string>("");
     const [watchMovie,setWatchMovie] = useState<MovieDetails>({} as MovieDetails);
+    const [isStreamLoading,setIsStreamLoading] = useState<boolean>(false);
+
 
 
     useEffect(()=>{
         const fetchMovieAndTailers = async(id:number) => {
+            setIsStreamLoading(true);
             const res = await getSingleMovieById(id);
             if (!res.error) {
                 setWatchMovie(res.movie);
             }
-
+            
             const tailersRes = await getTrailerListByMovieId(id);
             if (!tailersRes.error) {
                 setTrailers(tailersRes.tarilers);
                 setStreamKey(tailersRes.tarilers[0]?.key);
             }
+            setIsStreamLoading(false);
         }
 
         if (movie_id && typeof movie_id === "string") {
@@ -38,7 +43,11 @@ const Watch = () => {
         <Layout seo={{}}>
             <>
                 <h2 className='font-bold text-2xl'>{watchMovie.title}</h2>
-                <PlayerPlaylist selectedMovie={watchMovie} setStreamingKey={setStreamKey} streamingKey={streamKey} tarilers={trailers} />
+                {
+                    isStreamLoading 
+                    ? <div><Loader/></div>
+                    : <PlayerPlaylist selectedMovie={watchMovie} setStreamingKey={setStreamKey} streamingKey={streamKey} tarilers={trailers} />
+                }
             </>
         </Layout>
     );

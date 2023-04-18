@@ -1,5 +1,6 @@
 import FavouriteCard from '@/src/components/favourite/favouriteCard';
 import Layout from '@/src/components/Layout/Layout';
+import Loader from '@/src/components/shared/Loader';
 import { getMovieListByMovieIds } from '@/src/fetchers/movieFetchers';
 import { Movie, MovieDetails } from '@/src/typesDefs/movie.type';
 import { getFavouriteIds } from '@/src/utils/handleStorage';
@@ -8,13 +9,19 @@ import MovieCard from '../../src/components/movie/Movie';
 
 const Favourite = ():JSX.Element => {
     const [favouriteMovies,setFavouriteMovies] = useState<MovieDetails[]>([]);
-    console.log(favouriteMovies);
+    const [isFavouriteLoading,setIsFavouriteLoading] = useState<boolean>(false);
+    const [favouriteErr,setfavouriteErr] = useState<string>("");
     
     const fetchFavouriteList = async (ids:number[]) => {
+        setIsFavouriteLoading(true);
+        setfavouriteErr("");
         const response = await getMovieListByMovieIds(ids);
         if (!response.error) {
             setFavouriteMovies(response.favouriteList);
+        }else{
+            setfavouriteErr(response.message);
         }
+        setIsFavouriteLoading(false);
     };
     useEffect(()=>{
         const ids = getFavouriteIds();
@@ -29,10 +36,20 @@ const Favourite = ():JSX.Element => {
     return (
         <Layout seo={{}}>
             <>
-                <h2>You have {favouriteMovies.length} favourite movies</h2>
+                {
+                    !isFavouriteLoading && !favouriteErr  && <h2 className="text-center font-semibold my-6 text-xl">You have {favouriteMovies.length} favourite movies</h2>
+                }
+                
                 <section className=''>
                         {
-                            favouriteMovies.map((favouriteMovie:MovieDetails,idx:number) => <FavouriteCard favouriteMovie={favouriteMovie} isOrderChange={idx%2 == 0 ? true : false} removeFavourite={removeFavourite} key={favouriteMovie.id} />)
+                            isFavouriteLoading 
+                            ? <Loader /> 
+                            : favouriteErr
+                            ? <div className="text-center text-pink-700 font-semibold my-6"><p>{favouriteErr}</p></div>
+                            : <></>
+                        }
+                        {
+                            !isFavouriteLoading && favouriteMovies?.map((favouriteMovie:MovieDetails,idx:number) => <FavouriteCard favouriteMovie={favouriteMovie} isOrderChange={idx%2 == 0 ? true : false} removeFavourite={removeFavourite} key={favouriteMovie.id} />)
                         }
                 </section>
             </>
