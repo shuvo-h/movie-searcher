@@ -11,7 +11,7 @@ export const updateFavourite = (id:number,cb:(list:number[])=>void) =>{
     cb(data);
 }
 
-export const getFavouriteIds = () =>{
+export const getFavouriteIds = ():number[] =>{
     const store =  localStorage.getItem(storageName) ?? "[]";
     return JSON.parse(store);
 }

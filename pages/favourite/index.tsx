@@ -16,6 +16,8 @@ const Favourite = ():JSX.Element => {
         setIsFavouriteLoading(true);
         setfavouriteErr("");
         const response = await getMovieListByMovieIds(ids);
+        console.log(response);
+        
         if (!response.error) {
             setFavouriteMovies(response.favouriteList);
         }else{
@@ -43,9 +45,9 @@ const Favourite = ():JSX.Element => {
                 <section className=''>
                         {
                             isFavouriteLoading 
-                            ? <Loader /> 
+                            ? <div data-testid="favourite-loader"><Loader /> </div>
                             : favouriteErr
-                            ? <div className="text-center text-pink-700 font-semibold my-6"><p>{favouriteErr}</p></div>
+                            ? <div className="text-center text-pink-700 font-semibold my-6" data-testid="favourite-error"><p>{favouriteErr}</p></div>
                             : <></>
                         }
                         {

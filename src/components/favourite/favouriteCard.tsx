@@ -22,6 +22,7 @@ const FavouriteCard = ({favouriteMovie,isOrderChange,removeFavourite}:FavouriteC
         <div 
             className={`my-6 p-6 md:grid grid-cols-2 gap-4 bg-gray-100 rounded-lg`}
             key={favouriteMovie.id}
+            data-testid="favourite-movie"
         >
             <div className={`p-2 ${isOrderChange ? 'md:order-1':"md:order-0"}`}>
                 <div style={{width: '100%', height: '100%', position: 'relative'}}>

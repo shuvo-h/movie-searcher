@@ -1,4 +1,4 @@
-import { Movie } from "@/src/typesDefs/movie.type";
+import { Movie, MovieTrailer } from "@/src/typesDefs/movie.type";
 
 export const moviesDemo: Movie[] = [
     {
@@ -50,4 +50,45 @@ export const moviesDemo: Movie[] = [
       vote_count: 50
     }
 ];
+
+
+export const trailerListDemo:MovieTrailer[] = [
+  {
+    id: "1",
+    iso_639_1: "en",
+    iso_3166_1: "US",
+    key: "sGbxmsDFVnE",
+    name: "Avengers: Infinity War Trailer #1 (2018) | Movieclips Trailers",
+    official: true,
+    published_at: "2017-11-29T14:00:01.000Z",
+    site: "YouTube",
+    size: 1080,
+    type: "Trailer"
+  },
+  {
+    id: "2",
+    iso_639_1: "en",
+    iso_3166_1: "US",
+    key: "Yj0l7iGKh8g",
+    name: "Jurassic World: Fallen Kingdom - Official Trailer #2 [HD]",
+    official: true,
+    published_at: "2018-04-18T16:00:18.000Z",
+    site: "YouTube",
+    size: 1080,
+    type: "Trailer"
+  },
+  {
+    id: "3",
+    iso_639_1: "en",
+    iso_3166_1: "US",
+    key: "3MMMe1drnZY",
+    name: "Deadpool 2: The Final Trailer",
+    official: true,
+    published_at: "2018-04-19T13:45:53.000Z",
+    site: "YouTube",
+    size: 1080,
+    type: "Trailer"
+  }
+]
+
   

@@ -25,6 +25,7 @@ export default function Home(): JSX.Element {
   
 
   const searchMovie = async (e: React.KeyboardEvent<HTMLInputElement>,initialSearch?:string) => {
+    
     if (e.keyCode === 13 || e.key === "Enter" || initialSearch) {
       setIsMovieLoading(true);
       setMovies([]);
