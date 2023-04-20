@@ -46,7 +46,9 @@ const Watch = () => {
                 {
                     isStreamLoading 
                     ? <div><Loader/></div>
-                    : <PlayerPlaylist selectedMovie={watchMovie} setStreamingKey={setStreamKey} streamingKey={streamKey} tarilers={trailers} />
+                    : !trailers.length 
+                    ? <div className='text-center my-12 text-lg text-pink-700'><p>No trailer found</p></div>
+                    :<PlayerPlaylist selectedMovie={watchMovie} setStreamingKey={setStreamKey} streamingKey={streamKey} tarilers={trailers} />
                 }
             </>
         </Layout>
