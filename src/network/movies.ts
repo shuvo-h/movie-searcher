@@ -10,7 +10,6 @@ class MovieClient  extends ApiClient{
 
     getMovieTrailer(movieID:number){
         const url = `${this.url}/${movieID}/videos?api_key=${this.getKeys().movieApiKey}`;
-        const c =  axios.get(url);
         return axios.get(url);
     }
 
