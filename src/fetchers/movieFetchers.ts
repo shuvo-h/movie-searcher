@@ -35,7 +35,7 @@ interface TrailerListByID extends errorType {
 export const getTrailerListByMovieId = async (movieID: number): Promise<TrailerListByID> => {
   try {
     const { data } = await MovieFetcher.getMovieTrailer(movieID);
-    return { error: false, message: "", tarilers: data.results };
+    return { error: false, message: "", tarilers: data?.results??[] };
   } catch (error: any) {
     return { error: true, message: error.message, tarilers: [] };
   }

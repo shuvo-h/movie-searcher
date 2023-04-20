@@ -16,7 +16,6 @@ const Favourite = ():JSX.Element => {
         setIsFavouriteLoading(true);
         setfavouriteErr("");
         const response = await getMovieListByMovieIds(ids);
-        console.log(response);
         
         if (!response.error) {
             setFavouriteMovies(response.favouriteList);
