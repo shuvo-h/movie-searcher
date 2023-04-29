@@ -3,11 +3,11 @@ This is a [Next.js](https://nextjs.org/) application with typescript and tailwin
 ## Live URL: [https://movie-searcher-dev-mern.vercel.app](https://movie-searcher-dev-mern.vercel.app)
 
 ## List of technologies is used in this application:
-- `*Next.js*`
-- `*Typescript*`
-- `*Tailwind*`
-- `*Axios*`
-- `*Unit testing using jest and react unit testing library*`
+- *`Next.js`*
+- *`Typescript`*
+- *`Tailwind`*
+- *`Axios`*
+- *`Unit testing using jest and react unit testing library`*
 
 ## Getting Started
 
